@@ -1,0 +1,42 @@
+= Rack::Mockups
+
+Your application mockups responding to real application paths until your application
+handles the request on it's own.
+
+== Why?
+
+Every Rails and Rack application I write usually has a "APP_ROOT/public/mockups" directory
+where I start fleshing out the HTML/CSS/Layout for my application. Two problems here: 1)
+I never remember my mockups are in public/mockups, and 2) they don't reflect the real flow
+of the application. 
+
+Wouldn't be easier if I could go to /admin to see the mockups for the Admin
+section instead of going to /mockups/admin every time? Wouldn't it then be even easier if
+whenever I create a non-failing action that responds to /admin, that it would just automatically
+show the working version instead of the mockup? Well, if you said yes to both of those,
+today is your lucky day!
+
+== Usage
+
+In your config.ru
+
+  require 'rubygems'
+  require 'rack/mockups'
+  
+  # By default reads from RACK_ROOT/views/mockups
+  use Rack::Mockups
+  run the_app
+
+In your Rails application (config/environment.rb, with versions > 2.3)
+
+  config.gem 'ryanbriones-rack-mockups', :lib => 'rack/mockups', :source => 'http://gems.github.com'
+  # By default reads from RAILS_ROOT/app/views/mockups
+  config.middleware.use Rack::Mockups
+
+Using non-standard mockups path
+
+  use Rack::Mockups {|m| m.set_view_path '/path/to/my/mockups'}
+
+== TODO
+
+* support markup other than HTML (i.e. HAML, ERb, etc)
